@@ -1,4 +1,3 @@
-
 const express = require("express");
 const { AccessToken } = require("livekit-server-sdk");
 
