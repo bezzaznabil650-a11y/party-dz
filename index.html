@@ -2,203 +2,180 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Party Dz</title>
-  <style>
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #170d2b;
-      color: white;
-    }
-
-    header {
-      padding: 25px;
-      text-align: center;
-      background: linear-gradient(135deg, #54258d, #21113d);
-      border-bottom: 2px solid #d7ae55;
-    }
-
-    header h1 {
-      color: #f4ce72;
-      margin: 0;
-      font-size: 30px;
-    }
-
-    header p { color: #ddd0f4; }
-
-    .wallet {
-      margin: 18px;
-      padding: 18px;
-      text-align: center;
-      background: #30204b;
-      border: 1px solid #d7ae55;
-      border-radius: 14px;
-      line-height: 2;
-    }
-
-    h2 {
-      color: #f4ce72;
-      padding: 0 18px;
-    }
-
-    .rooms {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-      padding: 16px;
-    }
-
-    .room {
-      background: #30204b;
-      border: 1px solid #694a91;
-      border-radius: 15px;
-      padding: 18px 10px;
-      text-align: center;
-    }
-
-    .room h3 { color: #f4ce72; }
-
-    .room button {
-      background: #d5ad55;
-      color: #21113d;
-      border: 0;
-      border-radius: 20px;
-      padding: 10px 22px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .room button:disabled {
-      opacity: 0.6;
-      cursor: wait;
-    }
-
-    #message {
-      margin: 15px;
-      padding: 12px;
-      text-align: center;
-      color: #f4ce72;
-    }
-
-    nav {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      display: flex;
-      justify-content: space-around;
-      padding: 15px 5px;
-      background: #24143b;
-      border-top: 1px solid #d7ae55;
-    }
-
-    nav span { color: #f4ce72; }
-
-    main { padding-bottom: 75px; }
-
-    @media (max-width: 360px) {
-      .rooms { grid-template-columns: 1fr; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saher Live - Party Dz</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#100b20;color:#fff;font-family:Arial,sans-serif}
+header{background:linear-gradient(120deg,#241044,#51258a);padding:18px;border-bottom:2px solid #d5ad55}
+.brand{font-size:25px;font-weight:bold;color:#f5d47d}
+.sub{font-size:12px;color:#d9c6f5;margin-top:5px}
+.wallet{background:#211638;border:1px solid #b88d42;border-radius:15px;padding:13px;margin:15px;display:flex;justify-content:space-between;align-items:center}
+.gold{color:#f3ce70}
+button{border:0;border-radius:12px;padding:11px 16px;background:linear-gradient(120deg,#bd9345,#f3d47d);color:#241333;font-weight:bold;cursor:pointer}
+h3{margin:20px 15px 12px;color:#f3d47d}
+.rooms{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 12px 90px}
+.room{background:linear-gradient(145deg,#30204b,#191127);border:1px solid #75519a;border-radius:17px;padding:14px;min-height:145px}
+.room h4{margin:0 0 10px;font-size:17px}
+.room p{font-size:12px;color:#cbb9df}
+.room button{width:100%;margin-top:8px}
+.room-page{display:none;padding:15px 12px 100px}
+.room-banner{background:linear-gradient(120deg,#4d2678,#211333);border:1px solid #c39b50;border-radius:18px;padding:18px;text-align:center}
+.seats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px 8px;margin-top:25px}
+.seat{text-align:center;min-width:0}
+.avatar{width:58px;height:58px;margin:auto;border-radius:50%;border:2px solid #d6ae5b;background:#34224e;display:flex;align-items:center;justify-content:center;font-size:25px}
+.seat small{display:block;margin-top:7px;color:#e5d8f4;font-size:11px}
+.seat button{margin-top:6px;padding:6px 8px;font-size:10px}
+.controls{display:flex;justify-content:center;gap:10px;margin-top:25px;flex-wrap:wrap}
+.panel{display:none;padding:20px 15px 100px}
+.panel-card{background:#211638;border:1px solid #76549a;border-radius:16px;padding:18px;margin-bottom:13px}
+.profile{text-align:center}
+.profile .avatar{width:85px;height:85px;font-size:35px}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#1c1230;border-top:1px solid #8d6a3b;display:flex;justify-content:space-around;padding:12px 3px;z-index:5}
+.bottom button{background:transparent;color:#e9d9ff;padding:6px 4px;font-size:11px}
+.bottom button.active{color:#f3ce70}
+.back{margin:15px}
+.notice{font-size:12px;color:#d9c6f5;text-align:center;margin:15px}
+</style>
 </head>
-
 <body>
-  <header>
-    <h1>💜 Party Dz</h1>
-    <p>عالمك للصداقة والغرف الصوتية</p>
-  </header>
 
-  <main>
-    <div class="wallet">
-      🪙 رصيد العملات: 0
-      <br>
-      ⭐ مستوى VIP: 0
-    </div>
+<header>
+ <div class="brand">👑 SAHER LIVE</div>
+ <div class="sub">PARTY DZ • عالم الأصدقاء والغرف الصوتية</div>
+</header>
 
-    <h2>🎙️ الغرف الصوتية</h2>
+<div class="wallet">
+ <div>🪙 رصيدك: <b class="gold">0</b> عملة</div>
+ <button onclick="showPanel('wallet')">المحفظة</button>
+</div>
 
-    <div class="rooms">
-      <div class="room">
-        <h3>غرفة الأصدقاء</h3>
-        <p>🎤 8 مقاعد</p>
-        <button onclick="joinRoom('friends', this)">دخول</button>
-      </div>
+<main id="home">
+ <h3>✨ الغرف الصوتية</h3>
+ <div class="rooms">
+  <div class="room">
+   <h4>👑 غرفة الأصدقاء</h4>
+   <p>غرفة عامة • 8 مقاعد</p>
+   <button onclick="openRoom('غرفة الأصدقاء')">دخول الغرفة</button>
+  </div>
+  <div class="room">
+   <h4>🎤 غرفة السهر</h4>
+   <p>غرفة عامة • 8 مقاعد</p>
+   <button onclick="openRoom('غرفة السهر')">دخول الغرفة</button>
+  </div>
+  <div class="room">
+   <h4>💜 غرفة التعارف</h4>
+   <p>غرفة عامة • 8 مقاعد</p>
+   <button onclick="openRoom('غرفة التعارف')">دخول الغرفة</button>
+  </div>
+  <div class="room">
+   <h4>🔒 غرفة خاصة</h4>
+   <p>غرفة خاصة • 8 مقاعد</p>
+   <button onclick="openRoom('غرفة خاصة')">دخول الغرفة</button>
+  </div>
+ </div>
+</main>
 
-      <div class="room">
-        <h3>غرفة السهر</h3>
-        <p>🎤 8 مقاعد</p>
-        <button onclick="joinRoom('night', this)">دخول</button>
-      </div>
+<section class="room-page" id="roomPage">
+ <button class="back" onclick="goHome()">رجوع للغرف</button>
+ <div class="room-banner">
+  <h2 id="roomTitle">غرفة الأصدقاء</h2>
+  <div>💜 مرحبًا بكم في Saher Live</div>
+  <p>8 مقاعد صوتية</p>
+ </div>
+ <h3>🎙️ مقاعد الغرفة</h3>
+ <div class="seats" id="seats"></div>
+ <div class="controls">
+  <button onclick="alert('سيتم تفعيل الميكروفون عند ربط الصوت الحقيقي')">🎤 الميكروفون</button>
+  <button onclick="alert('نظام الهدايا قيد التجهيز')">🎁 الهدايا</button>
+  <button onclick="goHome()">مغادرة الغرفة</button>
+ </div>
+ <p class="notice" id="roomStatus">عرض المقاعد جاهز. الصوت المباشر لم يتم تفعيله بعد.</p>
+</section>
 
-      <div class="room">
-        <h3>غرفة التعارف</h3>
-        <p>🎤 8 مقاعد</p>
-        <button onclick="joinRoom('meeting', this)">دخول</button>
-      </div>
+<section class="panel" id="profile">
+ <div class="panel-card profile">
+  <div class="avatar">👤</div>
+  <h2>حسابي</h2>
+  <p>مستخدم جديد</p>
+  <p class="gold">VIP 0 • المستوى 0</p>
+  <p>معرّف المستخدم: لم يتم إنشاؤه بعد</p>
+ </div>
+ <div class="panel-card">👑 إطارات VIP — قريبًا</div>
+ <div class="panel-card">🏅 مستواك — قريبًا</div>
+</section>
 
-      <div class="room">
-        <h3>غرفة خاصة 🔒</h3>
-        <p>🎤 8 مقاعد</p>
-        <button onclick="joinRoom('private', this)">دخول</button>
-      </div>
-    </div>
+<section class="panel" id="wallet">
+ <h3>🪙 المحفظة</h3>
+ <div class="panel-card">
+  <h2 class="gold">0 عملة</h2>
+  <p>رصيد العملات الافتراضي</p>
+  <button onclick="alert('الشحن والدفع لم يتم تفعليهما بعد')">شحن العملات</button>
+ </div>
+ <div class="panel-card">🎁 سجل الهدايا — قريبًا</div>
+</section>
 
-    <div id="message">أهلاً بك في Party Dz 💜</div>
-  </main>
+<section class="panel" id="gifts">
+ <h3>🎁 الهدايا</h3>
+ <div class="panel-card">🌹 وردة</div>
+ <div class="panel-card">💎 ماسة</div>
+ <div class="panel-card">👑 تاج</div>
+ <p class="notice">الهدايا ظاهرة كواجهة تجريبية، والإرسال الفعلي لم يتم تفعيله بعد.</p>
+</section>
 
-  <nav>
-    <span>🏠 الرئيسية</span>
-    <span>🎁 الهدايا</span>
-    <span>👤 حسابي</span>
-    <span>⚙️ الإعدادات</span>
-  </nav>
+<section class="panel" id="settings">
+ <h3>⚙️ الإعدادات</h3>
+ <div class="panel-card">👤 إعدادات الحساب</div>
+ <div class="panel-card">🔔 الإشعارات — قريبًا</div>
+ <div class="panel-card">🌐 اللغة: العربية</div>
+ <div class="panel-card">🛡️ الخصوصية والأمان — قريبًا</div>
+</section>
 
-  <script>
-    const SERVER_URL = "https://party-dz.onrender.com";
+<nav class="bottom">
+ <button class="active" onclick="showPanel('home',this)">🏠<br>الرئيسية</button>
+ <button onclick="showPanel('profile',this)">👤<br>حسابي</button>
+ <button onclick="showPanel('wallet',this)">🪙<br>المحفظة</button>
+ <button onclick="showPanel('gifts',this)">🎁<br>الهدايا</button>
+ <button onclick="showPanel('settings',this)">⚙️<br>الإعدادات</button>
+</nav>
 
-    async function joinRoom(roomName, button) {
-      const participantName = prompt("اكتب اسمك داخل الغرفة");
-
-      if (!participantName || !participantName.trim()) return;
-
-      const message = document.getElementById("message");
-
-      button.disabled = true;
-      message.textContent = "جارٍ الاتصال بالخادم...";
-
-      try {
-        const response = await fetch(`${SERVER_URL}/get-token`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            roomName: roomName,
-            participantName: participantName.trim()
-          })
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.error || "تعذر إنشاء رمز الدخول");
-        }
-
-        message.textContent =
-          "تم إصدار رمز دخول الغرفة بنجاح. تشغيل الصوت لم يُفعّل بعد.";
-
-        console.log("Room:", roomName);
-        console.log("Token received successfully.");
-
-      } catch (error) {
-        message.textContent = "خطأ في الاتصال: " + error.message;
-      } finally {
-        button.disabled = false;
-      }
-    }
-  </script>
+<script>
+function hideAll(){
+ document.getElementById('home').style.display='none';
+ document.getElementById('roomPage').style.display='none';
+ ['profile','wallet','gifts','settings'].forEach(id=>{
+  document.getElementById(id).style.display='none';
+ });
+}
+function showPanel(id,btn){
+ hideAll();
+ document.getElementById(id).style.display='block';
+ document.querySelectorAll('.bottom button').forEach(b=>b.classList.remove('active'));
+ if(btn) btn.classList.add('active');
+ else document.querySelector('.bottom button').classList.toggle('active',id==='home');
+}
+function goHome(){
+ showPanel('home');
+}
+function openRoom(name){
+ hideAll();
+ document.getElementById('roomPage').style.display='block';
+ document.getElementById('roomTitle').textContent=name;
+ const seats=document.getElementById('seats');
+ seats.innerHTML='';
+ for(let i=1;i<=8;i++){
+  const item=document.createElement('div');
+  item.className='seat';
+  item.innerHTML='<div class="avatar">🎙️</div><small>المقعد '+i+'</small><button onclick="takeSeat('+i+')">انضم للمقعد</button>';
+  seats.appendChild(item);
+ }
+ document.getElementById('roomStatus').textContent='المقاعد الثمانية ظاهرة. الصوت المباشر لم يتم تفعيله بعد.';
+}
+function takeSeat(number){
+ alert('اخترت المقعد رقم '+number+'. حجز المقعد الفعلي يحتاج نظام عضويات واتصال مباشر.');
+}
+</script>
 </body>
 </html>
+
