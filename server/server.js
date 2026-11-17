@@ -4,7 +4,6 @@ const { AccessToken } = require("livekit-server-sdk");
 
 const app = express();
 
-// السماح لموقع Party Dz بالاتصال بالخادم
 app.use((req, res, next) => {
   res.setHeader(
     "Access-Control-Allow-Origin",
@@ -23,7 +22,7 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("Party Dz Voice Server is running!");
+  res.send("Saher Live Voice Server is running!");
 });
 
 app.post("/get-token", async (req, res) => {
@@ -37,7 +36,7 @@ app.post("/get-token", async (req, res) => {
       !participantName.trim()
     ) {
       return res.status(400).json({
-        error: "Missing or invalid room or participant name"
+        error: "Room name and participant name are required"
       });
     }
 
@@ -46,32 +45,35 @@ app.post("/get-token", async (req, res) => {
       !process.env.LIVEKIT_API_SECRET
     ) {
       return res.status(500).json({
-        error: "LiveKit credentials are not configured"
+        error: "LiveKit credentials are missing"
       });
     }
+
+    const identity = participantName.trim().slice(0, 50);
+    const room = roomName.trim().slice(0, 100);
 
     const token = new AccessToken(
       process.env.LIVEKIT_API_KEY,
       process.env.LIVEKIT_API_SECRET,
-      { identity: participantName.trim() }
+      { identity }
     );
 
     token.addGrant({
       roomJoin: true,
-      room: roomName.trim(),
+      room,
       canPublish: true,
       canSubscribe: true
     });
 
-    const jwt = await token.toJwt();
-
-    res.json({ token: jwt });
+    res.json({
+      token: await token.toJwt()
+    });
 
   } catch (error) {
-    console.error("Token generation error:", error);
+    console.error("LiveKit token error:", error);
 
     res.status(500).json({
-      error: "Could not create token"
+      error: "Could not create voice token"
     });
   }
 });
@@ -79,5 +81,5 @@ app.post("/get-token", async (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`Party Dz server running on port ${PORT}`);
+  console.log("Saher Live server running on port " + PORT);
 });
