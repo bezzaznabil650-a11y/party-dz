@@ -1,1 +1,118 @@
 
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Party Dz</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #170d2b;
+      color: white;
+    }
+    header {
+      padding: 24px;
+      text-align: center;
+      background: linear-gradient(135deg,#54258d,#21113d);
+      border-bottom: 2px solid #d7ae55;
+    }
+    header h1 { color: #f4ce72; margin: 0; }
+    header p { color: #ddd0f4; }
+    .wallet {
+      margin: 18px;
+      padding: 16px;
+      text-align: center;
+      background: #30204b;
+      border: 1px solid #d7ae55;
+      border-radius: 14px;
+    }
+    h2 { color: #f4ce72; padding: 0 18px; }
+    .rooms {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(145px,1fr));
+      gap: 14px;
+      padding: 16px;
+    }
+    .room {
+      background: #30204b;
+      border: 1px solid #694a91;
+      border-radius: 15px;
+      padding: 18px 10px;
+      text-align: center;
+    }
+    .room button {
+      background: #d5ad55;
+      border: 0;
+      border-radius: 20px;
+      padding: 9px 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      padding: 15px 5px;
+      background: #24143b;
+      border-top: 1px solid #d7ae55;
+    }
+    nav span { color: #f4ce72; }
+    main { padding-bottom: 75px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>💜 Party Dz</h1>
+    <p>عالمك للصداقة والغرف الصوتية</p>
+  </header>
+
+  <main>
+    <div class="wallet">
+      🪙 رصيد العملات: 0
+      <br><br>
+      ⭐ مستوى VIP: 0
+    </div>
+
+    <h2>🎙️ الغرف الصوتية</h2>
+
+    <div class="rooms">
+      <div class="room">
+        <h3>غرفة الأصدقاء</h3>
+        <p>🎤 8 مقاعد</p>
+        <button onclick="alert('أهلاً بك في غرفة الأصدقاء')">دخول</button>
+      </div>
+
+      <div class="room">
+        <h3>غرفة السهر</h3>
+        <p>🎤 8 مقاعد</p>
+        <button onclick="alert('أهلاً بك في غرفة السهر')">دخول</button>
+      </div>
+
+      <div class="room">
+        <h3>غرفة التعارف</h3>
+        <p>🎤 8 مقاعد</p>
+        <button onclick="alert('أهلاً بك في غرفة التعارف')">دخول</button>
+      </div>
+
+      <div class="room">
+        <h3>غرفة خاصة 🔒</h3>
+        <p>🎤 8 مقاعد</p>
+        <button onclick="alert('هذه غرفة خاصة')">دخول</button>
+      </div>
+    </div>
+  </main>
+
+  <nav>
+    <span>🏠 الرئيسية</span>
+    <span>🎁 الهدايا</span>
+    <span>👤 حسابي</span>
+    <span>⚙️ الإعدادات</span>
+  </nav>
+</body>
+</html>
+
