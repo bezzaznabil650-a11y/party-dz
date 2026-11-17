@@ -14,6 +14,7 @@ header{background:linear-gradient(120deg,#241044,#51258a);padding:18px;border-bo
 .wallet{background:#211638;border:1px solid #b88d42;border-radius:15px;padding:13px;margin:15px;display:flex;justify-content:space-between;align-items:center}
 .gold{color:#f3ce70}
 button{border:0;border-radius:12px;padding:11px 16px;background:linear-gradient(120deg,#bd9345,#f3d47d);color:#241333;font-weight:bold;cursor:pointer}
+input{width:100%;padding:13px;margin:7px 0;border-radius:10px;border:1px solid #76549a;background:#170f27;color:white;font-size:15px}
 h3{margin:20px 15px 12px;color:#f3d47d}
 .rooms{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 12px 90px}
 .room{background:linear-gradient(145deg,#30204b,#191127);border:1px solid #75519a;border-radius:17px;padding:14px;min-height:145px}
@@ -37,6 +38,12 @@ h3{margin:20px 15px 12px;color:#f3d47d}
 .bottom button.active{color:#f3ce70}
 .back{margin:15px}
 .notice{font-size:12px;color:#d9c6f5;text-align:center;margin:15px}
+#authBox{max-width:440px;margin:20px auto;padding:20px}
+#authBox .panel-card{text-align:center}
+#authMessage{font-size:13px;color:#f3ce70;min-height:22px}
+.authButtons{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.authButtons button{flex:1}
+.hidden{display:none!important}
 </style>
 </head>
 <body>
@@ -46,136 +53,262 @@ h3{margin:20px 15px 12px;color:#f3d47d}
  <div class="sub">PARTY DZ • عالم الأصدقاء والغرف الصوتية</div>
 </header>
 
-<div class="wallet">
- <div>🪙 رصيدك: <b class="gold">0</b> عملة</div>
- <button onclick="showPanel('wallet')">المحفظة</button>
+<section id="authBox">
+ <div class="panel-card">
+  <h2 class="gold">👑 Saher Live</h2>
+  <p>أنشئ حسابك أو سجل الدخول</p>
+  <input id="displayName" placeholder="اسم المستخدم">
+  <input id="email" type="email" placeholder="البريد الإلكتروني">
+  <input id="password" type="password" placeholder="كلمة المرور">
+  <div class="authButtons">
+   <button onclick="registerUser()">إنشاء حساب</button>
+   <button onclick="loginUser()">تسجيل الدخول</button>
+  </div>
+  <p id="authMessage"></p>
+ </div>
+</section>
+
+<div id="app" class="hidden">
+ <div class="wallet">
+  <div>🪙 رصيدك: <b class="gold" id="coinBalance">0</b> عملة</div>
+  <button onclick="showPanel('wallet')">المحفظة</button>
+ </div>
+
+ <main id="home">
+  <h3>✨ الغرف الصوتية</h3>
+  <div class="rooms">
+   <div class="room"><h4>👑 غرفة الأصدقاء</h4><p>غرفة عامة • 8 مقاعد</p><button onclick="openRoom('غرفة الأصدقاء')">دخول الغرفة</button></div>
+   <div class="room"><h4>🎤 غرفة السهر</h4><p>غرفة عامة • 8 مقاعد</p><button onclick="openRoom('غرفة السهر')">دخول الغرفة</button></div>
+   <div class="room"><h4>💜 غرفة التعارف</h4><p>غرفة عامة • 8 مقاعد</p><button onclick="openRoom('غرفة التعارف')">دخول الغرفة</button></div>
+   <div class="room"><h4>🔒 غرفة خاصة</h4><p>غرفة خاصة • 8 مقاعد</p><button onclick="openRoom('غرفة خاصة')">دخول الغرفة</button></div>
+  </div>
+ </main>
+
+ <section class="room-page" id="roomPage">
+  <button class="back" onclick="goHome()">رجوع للغرف</button>
+  <div class="room-banner">
+   <h2 id="roomTitle">غرفة الأصدقاء</h2>
+   <div>💜 مرحبًا بكم في Saher Live</div>
+   <p>8 مقاعد صوتية</p>
+  </div>
+  <h3>🎙️ مقاعد الغرفة</h3>
+  <div class="seats" id="seats"></div>
+  <div class="controls">
+   <button onclick="alert('الصوت المباشر لم يتم ربطه بعد')">🎤 الميكروفون</button>
+   <button onclick="alert('نظام الهدايا قيد التجهيز')">🎁 الهدايا</button>
+   <button onclick="goHome()">مغادرة الغرفة</button>
+  </div>
+  <p class="notice">المقاعد تجريبية. الصوت المباشر لم يتم تفعيله بعد.</p>
+ </section>
+
+ <section class="panel" id="profile">
+  <div class="panel-card profile">
+   <div class="avatar">👤</div>
+   <h2>حسابي</h2>
+   <p id="profileName">مستخدم</p>
+   <p id="profileEmail"></p>
+   <p class="gold">VIP 0 • المستوى 0</p>
+   <p>معرّف المستخدم:</p>
+   <p id="profileId" style="font-size:11px;overflow-wrap:anywhere"></p>
+   <button onclick="logoutUser()">تسجيل الخروج</button>
+  </div>
+ </section>
+
+ <section class="panel" id="wallet">
+  <h3>🪙 المحفظة</h3>
+  <div class="panel-card">
+   <h2 class="gold">0 عملة</h2>
+   <p>الرصيد الحالي تجريبي</p>
+   <button onclick="alert('الشحن والدفع لم يتم تفعليهما بعد')">شحن العملات</button>
+  </div>
+ </section>
+
+ <section class="panel" id="gifts">
+  <h3>🎁 الهدايا</h3>
+  <div class="panel-card">🌹 وردة</div>
+  <div class="panel-card">💎 ماسة</div>
+  <div class="panel-card">👑 تاج</div>
+  <p class="notice">الهدايا تجريبية ولم يتم تفعيل إرسالها.</p>
+ </section>
+
+ <section class="panel" id="settings">
+  <h3>⚙️ الإعدادات</h3>
+  <div class="panel-card">🌐 اللغة: العربية</div>
+  <div class="panel-card">🛡️ الخصوصية والأمان</div>
+  <button onclick="logoutUser()">تسجيل الخروج</button>
+ </section>
+
+ <nav class="bottom">
+  <button class="active" onclick="showPanel('home',this)">🏠<br>الرئيسية</button>
+  <button onclick="showPanel('profile',this)">👤<br>حسابي</button>
+  <button onclick="showPanel('wallet',this)">🪙<br>المحفظة</button>
+  <button onclick="showPanel('gifts',this)">🎁<br>الهدايا</button>
+  <button onclick="showPanel('settings',this)">⚙️<br>الإعدادات</button>
+ </nav>
 </div>
 
-<main id="home">
- <h3>✨ الغرف الصوتية</h3>
- <div class="rooms">
-  <div class="room">
-   <h4>👑 غرفة الأصدقاء</h4>
-   <p>غرفة عامة • 8 مقاعد</p>
-   <button onclick="openRoom('غرفة الأصدقاء')">دخول الغرفة</button>
-  </div>
-  <div class="room">
-   <h4>🎤 غرفة السهر</h4>
-   <p>غرفة عامة • 8 مقاعد</p>
-   <button onclick="openRoom('غرفة السهر')">دخول الغرفة</button>
-  </div>
-  <div class="room">
-   <h4>💜 غرفة التعارف</h4>
-   <p>غرفة عامة • 8 مقاعد</p>
-   <button onclick="openRoom('غرفة التعارف')">دخول الغرفة</button>
-  </div>
-  <div class="room">
-   <h4>🔒 غرفة خاصة</h4>
-   <p>غرفة خاصة • 8 مقاعد</p>
-   <button onclick="openRoom('غرفة خاصة')">دخول الغرفة</button>
-  </div>
- </div>
-</main>
-
-<section class="room-page" id="roomPage">
- <button class="back" onclick="goHome()">رجوع للغرف</button>
- <div class="room-banner">
-  <h2 id="roomTitle">غرفة الأصدقاء</h2>
-  <div>💜 مرحبًا بكم في Saher Live</div>
-  <p>8 مقاعد صوتية</p>
- </div>
- <h3>🎙️ مقاعد الغرفة</h3>
- <div class="seats" id="seats"></div>
- <div class="controls">
-  <button onclick="alert('سيتم تفعيل الميكروفون عند ربط الصوت الحقيقي')">🎤 الميكروفون</button>
-  <button onclick="alert('نظام الهدايا قيد التجهيز')">🎁 الهدايا</button>
-  <button onclick="goHome()">مغادرة الغرفة</button>
- </div>
- <p class="notice" id="roomStatus">عرض المقاعد جاهز. الصوت المباشر لم يتم تفعيله بعد.</p>
-</section>
-
-<section class="panel" id="profile">
- <div class="panel-card profile">
-  <div class="avatar">👤</div>
-  <h2>حسابي</h2>
-  <p>مستخدم جديد</p>
-  <p class="gold">VIP 0 • المستوى 0</p>
-  <p>معرّف المستخدم: لم يتم إنشاؤه بعد</p>
- </div>
- <div class="panel-card">👑 إطارات VIP — قريبًا</div>
- <div class="panel-card">🏅 مستواك — قريبًا</div>
-</section>
-
-<section class="panel" id="wallet">
- <h3>🪙 المحفظة</h3>
- <div class="panel-card">
-  <h2 class="gold">0 عملة</h2>
-  <p>رصيد العملات الافتراضي</p>
-  <button onclick="alert('الشحن والدفع لم يتم تفعليهما بعد')">شحن العملات</button>
- </div>
- <div class="panel-card">🎁 سجل الهدايا — قريبًا</div>
-</section>
-
-<section class="panel" id="gifts">
- <h3>🎁 الهدايا</h3>
- <div class="panel-card">🌹 وردة</div>
- <div class="panel-card">💎 ماسة</div>
- <div class="panel-card">👑 تاج</div>
- <p class="notice">الهدايا ظاهرة كواجهة تجريبية، والإرسال الفعلي لم يتم تفعيله بعد.</p>
-</section>
-
-<section class="panel" id="settings">
- <h3>⚙️ الإعدادات</h3>
- <div class="panel-card">👤 إعدادات الحساب</div>
- <div class="panel-card">🔔 الإشعارات — قريبًا</div>
- <div class="panel-card">🌐 اللغة: العربية</div>
- <div class="panel-card">🛡️ الخصوصية والأمان — قريبًا</div>
-</section>
-
-<nav class="bottom">
- <button class="active" onclick="showPanel('home',this)">🏠<br>الرئيسية</button>
- <button onclick="showPanel('profile',this)">👤<br>حسابي</button>
- <button onclick="showPanel('wallet',this)">🪙<br>المحفظة</button>
- <button onclick="showPanel('gifts',this)">🎁<br>الهدايا</button>
- <button onclick="showPanel('settings',this)">⚙️<br>الإعدادات</button>
-</nav>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 
 <script>
+const firebaseConfig = {
+ apiKey: "AIzaSyCJ_CHLqfVhlLWUE_j-b040depzjZIXh6E",
+ authDomain: "saher-live.firebaseapp.com",
+ projectId: "saher-live",
+ storageBucket: "saher-live.firebasestorage.app",
+ messagingSenderId: "305964681441",
+ appId: "1:305964681441:web:9f4b20c0cf45a70e068fa0"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+const authBox = document.getElementById("authBox");
+const app = document.getElementById("app");
+const authMessage = document.getElementById("authMessage");
+
+function showMessage(message){
+ authMessage.textContent = message;
+}
+
+async function registerUser(){
+ const name = document.getElementById("displayName").value.trim();
+ const email = document.getElementById("email").value.trim();
+ const password = document.getElementById("password").value;
+
+ if(!name || !email || !password){
+  showMessage("اكتب اسم المستخدم والبريد الإلكتروني وكلمة المرور");
+  return;
+ }
+ if(password.length < 6){
+  showMessage("كلمة المرور يجب أن تكون 6 أحرف على الأقل");
+  return;
+ }
+
+ try{
+  showMessage("جارٍ إنشاء الحساب...");
+  const result = await auth.createUserWithEmailAndPassword(email,password);
+  await result.user.updateProfile({displayName:name});
+
+  await db.collection("users").doc(result.user.uid).set({
+   userId: result.user.uid,
+   displayName: name,
+   email: email,
+   coins: 0,
+   vip: 0,
+   level: 0,
+   createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+
+  showMessage("تم إنشاء الحساب بنجاح");
+ }catch(error){
+  showMessage(firebaseError(error.code));
+ }
+}
+
+async function loginUser(){
+ const email = document.getElementById("email").value.trim();
+ const password = document.getElementById("password").value;
+
+ if(!email || !password){
+  showMessage("اكتب البريد الإلكتروني وكلمة المرور");
+  return;
+ }
+
+ try{
+  showMessage("جارٍ تسجيل الدخول...");
+  await auth.signInWithEmailAndPassword(email,password);
+ }catch(error){
+  showMessage(firebaseError(error.code));
+ }
+}
+
+function firebaseError(code){
+ const messages = {
+  "auth/email-already-in-use":"هذا البريد الإلكتروني مسجل بالفعل",
+  "auth/invalid-email":"البريد الإلكتروني غير صحيح",
+  "auth/weak-password":"كلمة المرور ضعيفة",
+  "auth/user-not-found":"الحساب غير موجود",
+  "auth/wrong-password":"كلمة المرور غير صحيحة",
+  "auth/invalid-credential":"بيانات تسجيل الدخول غير صحيحة",
+  "auth/too-many-requests":"محاولات كثيرة، حاول لاحقًا",
+  "permission-denied":"لا توجد صلاحية لحفظ البيانات. راجع قواعد Firestore"
+ };
+ return messages[code] || "حدث خطأ: " + code;
+}
+
+auth.onAuthStateChanged(async user=>{
+ if(user){
+  authBox.classList.add("hidden");
+  app.classList.remove("hidden");
+  document.getElementById("profileName").textContent = user.displayName || "مستخدم";
+  document.getElementById("profileEmail").textContent = user.email || "";
+  document.getElementById("profileId").textContent = user.uid;
+
+  try{
+   const doc = await db.collection("users").doc(user.uid).get();
+   if(doc.exists){
+    const data = doc.data();
+    document.getElementById("profileName").textContent = data.displayName || user.displayName || "مستخدم";
+    document.getElementById("coinBalance").textContent = data.coins || 0;
+   }
+  }catch(error){
+   console.error("Firestore error:",error);
+  }
+ }else{
+  app.classList.add("hidden");
+  authBox.classList.remove("hidden");
+ }
+});
+
+async function logoutUser(){
+ try{
+  await auth.signOut();
+  showMessage("تم تسجيل الخروج");
+ }catch(error){
+  alert("تعذر تسجيل الخروج");
+ }
+}
+
 function hideAll(){
- document.getElementById('home').style.display='none';
- document.getElementById('roomPage').style.display='none';
- ['profile','wallet','gifts','settings'].forEach(id=>{
-  document.getElementById(id).style.display='none';
+ document.getElementById("home").style.display="none";
+ document.getElementById("roomPage").style.display="none";
+ ["profile","wallet","gifts","settings"].forEach(id=>{
+  document.getElementById(id).style.display="none";
  });
 }
+
 function showPanel(id,btn){
  hideAll();
- document.getElementById(id).style.display='block';
- document.querySelectorAll('.bottom button').forEach(b=>b.classList.remove('active'));
- if(btn) btn.classList.add('active');
- else document.querySelector('.bottom button').classList.toggle('active',id==='home');
+ document.getElementById(id).style.display="block";
+ document.querySelectorAll(".bottom button").forEach(b=>b.classList.remove("active"));
+ if(btn) btn.classList.add("active");
+ else document.querySelector(".bottom button").classList.toggle("active",id==="home");
 }
+
 function goHome(){
- showPanel('home');
+ showPanel("home");
 }
+
 function openRoom(name){
  hideAll();
- document.getElementById('roomPage').style.display='block';
- document.getElementById('roomTitle').textContent=name;
- const seats=document.getElementById('seats');
- seats.innerHTML='';
+ document.getElementById("roomPage").style.display="block";
+ document.getElementById("roomTitle").textContent=name;
+ const seats=document.getElementById("seats");
+ seats.innerHTML="";
  for(let i=1;i<=8;i++){
-  const item=document.createElement('div');
-  item.className='seat';
+  const item=document.createElement("div");
+  item.className="seat";
   item.innerHTML='<div class="avatar">🎙️</div><small>المقعد '+i+'</small><button onclick="takeSeat('+i+')">انضم للمقعد</button>';
   seats.appendChild(item);
  }
- document.getElementById('roomStatus').textContent='المقاعد الثمانية ظاهرة. الصوت المباشر لم يتم تفعيله بعد.';
 }
+
 function takeSeat(number){
- alert('اخترت المقعد رقم '+number+'. حجز المقعد الفعلي يحتاج نظام عضويات واتصال مباشر.');
+ alert("اخترت المقعد رقم "+number+". حجز المقعد الفعلي لم يتم تفعيله بعد.");
 }
 </script>
 </body>
 </html>
-
